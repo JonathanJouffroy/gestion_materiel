@@ -1,0 +1,25 @@
+body
+{
+    background-color: rgba(5, 66, 128, 0.9);
+    
+}
+#titreA
+{
+    text-align: center;
+    padding-top: 10%;
+}
+#divA
+{
+    padding-top: 2%;
+    text-align: center;
+}
+#mdpA
+{
+    padding-left: 1.4%;
+    
+}
+#titreaccueil
+{
+    text-align: center;
+    padding-top:5%;
+}
