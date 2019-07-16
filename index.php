@@ -12,6 +12,11 @@ and open the template in the editor.
         $mdp='';
         $pdo = PdoBdd::getPdoBdd();
         $Connexion = $pdo->Connexion($nom,$mdp);
+        
+ error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+
  ?>
 <html>
     <head>
@@ -30,10 +35,10 @@ and open the template in the editor.
             <input type="text" name="nomutilisateur" placeholder="Nom d'utilisateur">
             <br>
             <br>
-            <input type="password" name="mdp" placeholder="Mot de passe" value="$nom">
+            <input type="password" name="mdp" placeholder="Mot de passe">
             <br>
             <br>
-            <input type="submit" value="Connexion" name="btn_connexion" class="btn-success" value="$mdp">
+            <input type="submit" value="Connexion" name="btn_connexion" class="btn-success">
         </form>
     </div>
         <?php

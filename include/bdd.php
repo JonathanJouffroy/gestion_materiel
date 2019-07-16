@@ -14,6 +14,7 @@
 		private static $mdp = '';
 		private static $monPdo;
 		private static $monPdoBdd = null;
+                
 
 		/**
 		 * Constructeur privé, crée l'instance de PDO qui sera sollicitée
@@ -24,6 +25,7 @@
 		{
 			PdoBdd::$monPdo = new PDO(PdoBdd::$serveur . ';' . PdoBdd::$bdd, PdoBdd::$user, PdoBdd::$mdp);
 			PdoBdd::$monPdo->query("SET CHARACTER SET utf8");
+                        PdoBdd::$monPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 
 		/**
