@@ -48,7 +48,7 @@
                 {
                     
                     $cnx = PdoBdd::$monPdo;
-                    $req="SELECT nom
+                    $req="SELECT id,nom
                           FROM antennes";
                      $reqprepare = $cnx->prepare($req);
 	             $reqprepare->execute();
@@ -56,17 +56,41 @@
 	             return $tabcomp;
                 }
                 
-                public function Connexion($nom_utilsateur,$mdp)
+          
+                
+                public function Connexion($user, $pass)
                 {
-                    $cnx = PdoBdd::$monPdo;
-                    $req = "SELECT nom_d_utilisateur, mdp
-                            FROM utilisateurs
-                            WHERE nom_d_utilisateur = '$nom_utilsateur' and mdp = '$mdp' ";
-                     $reqprepare = $cnx->prepare($req);
-	             $reqprepare->execute();
-                     $tabcomp = $reqprepare->fetch(); 
-	             return $tabcomp;
+                    $cnn = PdoBdd::$monPdo;
+                    try
+                    {
+                         $stmt = $cnn->prepare('SELECT nom_d_utilisateur, mdp FROM utilisateurs WHERE nom_d_utilisateur = :user');
+                         $stmt->bindParam(':user', $user);
+                         $stmt->execute();
+                         $row = $stmt->fetch(PDO::FETCH_OBJ);
+                    }
+                    catch(Exception $e){
+                     echo "Error !" .$e->getMessage();
+                }
+                //print $row->Password;
+                return  password_verify($pass, $row->mdp) ? true : false ;
                 }
 
+                public function Enregistrer($user, $pass, $antenne){
+                    $pass = password_hash($pass, PASSWORD_DEFAULT);
+
+                    $cnn = PdoBdd::$monPdo;
+                    try{
+                      $stmt = $cnn->prepare('INSERT INTO utilisateurs (nom_d_utilisateur,mdp,id_Antennes) VALUES (:user, :pass, :antenne)');
+                      $stmt->bindParam(':user', $user);
+                      $stmt->bindParam(':pass', $pass);
+                      $stmt->bindParam(':antenne', $antenne);
+                      $result = $stmt->execute();
+                        }catch(Exception $e){
+                        echo "Error !" .$e->getMessage();
+                        $result = false;  
+                    }
+                    return $result;
+                } 
+
 		
-        }
+}

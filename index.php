@@ -6,18 +6,43 @@ and open the template in the editor.
 -->
 
 <?php 
-        include 'vues/v_header.php'; 
-        include 'include/bdd.php';
-        $nom= '';
-        $mdp='';
-        $pdo = PdoBdd::getPdoBdd();
-        $Connexion = $pdo->Connexion($nom,$mdp);
-        
- error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
 
- ?>
+session_start();
+include 'include/bdd.php';
+$pdo = PdoBdd::getPdoBdd();
+ $error = '';
+ $Connexion = false;
+
+ //VERIFIE SI FORMULAIRE ENVOYÉ OU PAS
+ if(isset($_POST['deco'])){
+  session_destroy();
+ }
+  
+  
+ // Récupération PROPRE des variables AVANT de les utiliser :
+ $userName = !empty($_POST['userName']) ? $_POST['userName'] : NULL;
+ $password = !empty($_POST['pass']) ? $_POST['pass'] : NULL;
+ $id = !empty($_POST['idA']) ? $_POST['idA'] : NULL;
+  
+ if($userName && $password){
+
+   if(isset($_POST['valider'])){
+    $Connexion = $pdo->Connexion($userName, $password);
+    if($Connexion == true){
+     $_SESSION['user'] = $userName;
+     header('Location: vues/v_accueil.php');
+    } else {
+     echo "LOGIN OU MOT DE PASSE INVALIDE";
+    }
+   }
+   
+  }
+  else{
+   $error = 'Veuillez remplir tous le champs!';
+  }
+
+
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -31,18 +56,22 @@ ini_set('display_startup_errors', TRUE);
  
     <h1 id="titreA">Se connecter</h1>
     <div id="divA">  
-        <form action="vues/v_accueil.php" method="POST">
-            <input type="text" name="nomutilisateur" placeholder="Nom d'utilisateur">
+        <form action="" method="POST">
+            <input class="inputLogin" type="text" name="userName" placeholder="Nom d'utilisateur" required/>
             <br>
             <br>
-            <input type="password" name="mdp" placeholder="Mot de passe">
+            <input class="inputLogin" type="password" name="pass" placeholder="Mot de passe" required>
             <br>
             <br>
-            <input type="submit" value="Connexion" name="btn_connexion" class="btn-success">
+
+            <input type="submit" value="Connexion" name="valider" class="btn-success">
         </form>
-    </div>
-        <?php
-          
-     ?>
+        <br>
+       <form action="vues/v_enregistrement.php" method="POST">
+            <input type="submit" value="Créer mon compte" name="enregistrer" class="btn-success" >
+       </form>
+    </div>    
     </body>
 </html>
+
+
