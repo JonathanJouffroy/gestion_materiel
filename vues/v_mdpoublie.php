@@ -4,6 +4,14 @@ include '../include/bdd.php';
  $pdo = PdoBdd::getPdoBdd();
  $error = '';
  $section='';
+ 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
 ?>
 <html>
     <head>
@@ -40,10 +48,59 @@ Nouveau mot de passe pour <?= $_SESSION['recup_mail'] ?>
 <?php } ?>
 <?php if(isset($error)) { echo '<span style="color:red">'.$error.'</span>'; } else { echo ""; } ?>
         <br>
-    </div>    
+    </div>  
+    
+    
+    
+<?php
+require '../vendor/autoload.php';
+if(isset($_POST['mailform']))
+{
+
+$mail = new PHPMailer(true);       
+$mail->CharSet = 'UTF-8';                     // Passing `true` enables exceptions
+try {
+    //Server settings
+    $mail->SMTPDebug = 2; 
+    $mail->Host='';
+    $mail->isSMTP();
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = '';                 // SMTP username
+    $mail->Password = '';                           // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
+
+    //Recipients
+    $mail->setFrom('test@laurentdebize.com', 'Garderie de Meillonnas');
+	
+    $mail->addAddress("jonathanjouffroy@gmail.com", "Jonathan");     // Add a recipient
+ 
+    
+	$body = "<p>Bonjour,</p>
+
+	<p>Voici votre Facture du mois.</p>
+	
+	<p>Cordialement,</p>";
+
+	
+    //Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'test';
+    $mail->Body = $body;
+    $mail->AltBody = strip_tags($body);
+    $mail->send();
+
+
+} catch (Exception $e) {
+    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+}
+
+}
+
+?>
+<form method="POST" action="">
+	<input type="submit" value="Recevoir un mail !" name="mailform"/>
+</form>
     </body>
 </html>
-
-
-
 
