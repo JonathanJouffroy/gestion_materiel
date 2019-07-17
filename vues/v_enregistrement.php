@@ -13,26 +13,26 @@ $listeAntenne = $pdo->AfficherAntenne();
   
  // Récupération PROPRE des variables AVANT de les utiliser :
 $userName = !empty($_POST['userName']) ? $_POST['userName'] : NULL;
-$password = !empty($_POST['pass']) ? $_POST['pass'] : NULL;
-$id = !empty($_POST['idA']) ? $_POST['idA'] : NULL;
+$password = !empty($_POST['mdp']) ? $_POST['mdp'] : NULL;
+$idAntenne = !empty($_POST['idA']) ? $_POST['idA'] : NULL;
 $nomU = !empty($_POST['nom']) ? $_POST['nom'] :NULL;
 $prenomU = !empty($_POST['prenom']) ? $_POST['prenom'] :NULL;
 $adresseM = !empty($_POST['mail']) ? $_POST['mail'] :NULL;
-$roleU = !empty($_POST['role']) ? $_POST['role'] :NULL;
  
-if($userName && $password){
+if($nomU && $password){
 
-    if(isset($_POST['register'])){
-    $Enregistrer = $pdo->Enregistrer($userName, $password, $id);
+    if(isset($_POST['enregistrer'])){
+    $Enregistrer = $pdo->Enregistrer($nomU,$prenomU,$userName,$password,$adresseM,$idAntenne);
     if($Enregistrer == true){
      $_SESSION['user'] = $userName;
+     header('Location: ../index.php');
+    }
+    else if($Enregistrer == false){
+       $error = "Données invalides";
     }
    }
-   
-  }
-  else{
-   $error = 'Veuillez remplir tous le champs!';
-  }
+ }
+ 
 
 
 ?>
@@ -55,11 +55,12 @@ if($userName && $password){
             <br>
             <br>
             <input class="inputRegister" type="text" name="userName" placeholder="Nom d'utilisateur" required/>
-            <input class="inputRegister" type="password" name="pass" placeholder="Mot de passe" required>
+            <input class="inputRegister" type="password" name="mdp" placeholder="Mot de passe" required>
             <br>
             <br>
+            <input class="inputRegister" type="email" name="mail" placeholder="Adresse Mail" required>
             <p>Antenne :</p>
-                <SELECT name="idA" size="1" required="">
+                <SELECT name="idA" size="1" required>
                 <?php 
                 foreach ($listeAntenne as $listeA)
                 {
@@ -68,14 +69,12 @@ if($userName && $password){
                 }
                 
                 ?>
-           </SELECT>
-            
+           </SELECT
             <br>
-            <br>
-            <input class="inputRegister" type="text" name="mail" placeholder="Adresse Mail" required>
             <br>
             <br>
             <input type="submit" value="Créer mon compte" name="enregistrer" class="btn-success" >
+            <p><?php echo $error?></p>
         </form>
         <br>
     </div>    

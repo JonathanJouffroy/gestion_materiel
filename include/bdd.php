@@ -66,23 +66,36 @@
                          $stmt = $cnn->prepare('SELECT nom_d_utilisateur, mdp FROM utilisateurs WHERE nom_d_utilisateur = :user');
                          $stmt->bindParam(':user', $user);
                          $stmt->execute();
-                         $row = $stmt->fetch(PDO::FETCH_OBJ);
+                         $user1 = $stmt->fetch(PDO::FETCH_OBJ);
+                         if($user1)
+                         {
+                             
+                        if ($user1 && password_verify($_POST['pass'], $user1->mdp)) 
+                        {
+                                 return true  ;    
+                         }
+                         else {
+                            return false;
+                            }     
+                        }
                     }
                     catch(Exception $e){
                      echo "Error !" .$e->getMessage();
                 }
-                //print $row->Password;
-                return  password_verify($pass, $row->mdp) ? true : false ;
+                
                 }
 
-                public function Enregistrer($user, $pass, $antenne){
-                    $pass = password_hash($pass, PASSWORD_DEFAULT);
+                public function Enregistrer($nom,$prenom,$nomU,$mdp,$adresseMail,$antenne){
+                    $mdp = password_hash($mdp, PASSWORD_DEFAULT);
 
                     $cnn = PdoBdd::$monPdo;
                     try{
-                      $stmt = $cnn->prepare('INSERT INTO utilisateurs (nom_d_utilisateur,mdp,id_Antennes) VALUES (:user, :pass, :antenne)');
-                      $stmt->bindParam(':user', $user);
-                      $stmt->bindParam(':pass', $pass);
+                      $stmt = $cnn->prepare('INSERT INTO utilisateurs (nom,prenom,adresse_mail,nom_d_utilisateur,mdp,id_Antennes) VALUES (:nom, :prenom, :adresseM, :nomU, :mdp, :antenne)');
+                      $stmt->bindParam(':nom', $nom);
+                      $stmt->bindParam(':prenom', $prenom);
+                      $stmt->bindParam(':adresseM', $adresseMail);
+                      $stmt->bindParam(':nomU', $nomU);
+                      $stmt->bindParam(':mdp', $mdp);
                       $stmt->bindParam(':antenne', $antenne);
                       $result = $stmt->execute();
                         }catch(Exception $e){

@@ -22,7 +22,6 @@ $pdo = PdoBdd::getPdoBdd();
  // Récupération PROPRE des variables AVANT de les utiliser :
  $userName = !empty($_POST['userName']) ? $_POST['userName'] : NULL;
  $password = !empty($_POST['pass']) ? $_POST['pass'] : NULL;
- $id = !empty($_POST['idA']) ? $_POST['idA'] : NULL;
   
  if($userName && $password){
 
@@ -31,14 +30,12 @@ $pdo = PdoBdd::getPdoBdd();
     if($Connexion == true){
      $_SESSION['user'] = $userName;
      header('Location: vues/v_accueil.php');
-    } else {
-     echo "LOGIN OU MOT DE PASSE INVALIDE";
+    }
+    if($Connexion == false) {
+     $error =  "LOGIN OU MOT DE PASSE INVALIDE";
     }
    }
    
-  }
-  else{
-   $error = 'Veuillez remplir tous le champs!';
   }
 
 
@@ -70,6 +67,12 @@ $pdo = PdoBdd::getPdoBdd();
        <form action="vues/v_enregistrement.php" method="POST">
             <input type="submit" value="Créer mon compte" name="enregistrer" class="btn-success" >
        </form>
+            <br>
+        <form action="vues/v_mdpoublie.php" method="POST">
+            <input type="submit" value="Mot de passe oublié" name="mdpoublie" class="btn-success" >
+            
+       </form>
+        <p> <?php echo $error ?></p>
     </div>    
     </body>
 </html>
