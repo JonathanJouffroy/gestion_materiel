@@ -74,6 +74,7 @@ if($nomU && $password){
             <br>
             <br>
             <input type="submit" value="Créer mon compte" name="enregistrer" class="btn-success" >
+            <input type="submit" value="Accueil" name="accueil" class="btn-success" onclick="window.location.href = 'http://127.0.0.1/Gestion%20du%20matériel';"/>
             <p><?php echo $error?></p>
         </form>
         <br>

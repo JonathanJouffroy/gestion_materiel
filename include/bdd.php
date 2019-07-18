@@ -104,6 +104,127 @@
                     }
                     return $result;
                 } 
+                
+                public function VerifMail($recup_mail)
+                {
+                     $cnx = PdoBdd::$monPdo;
+             
+                         $req="SELECT id,nom_d_utilisateur
+                           FROM utilisateurs
+                           WHERE adresse_mail = ?";
+                     $reqprepare = $cnx->prepare($req);
+	             $reqprepare->execute(array($recup_mail));
+	             $recup_count = $reqprepare->rowCount();
+                     
+                     if($recup_count == 1)
+                     {
+                         $nomU = $reqprepare->fetch();
+                         $nomU = $nomU['nom_d_utilisateur']; 
+                         return $nomU;
+                     }
+                     
+                }
+                    
+                
+                
+                public function VerifCodeMDP($recup_mail)
+                {
+                    $cnx = PdoBdd::$monPdo;
+                   
+                    
+                        $req="SELECT id
+                           FROM recuperation
+                           WHERE mail = ?";
+                     $reqprepare = $cnx->prepare($req);
+	             $reqprepare->execute(array($recup_mail));
+	             $verif_count = $reqprepare->rowCount();
+                     
+                    return $verif_count;
 
+                }
+                
+                 public function UpdateRecup($recup_code,$recup_mail)
+                     {
+                         $cnx = PdoBdd::$monPdo;
+                     
+                         $recup_insert = $cnx->prepare('UPDATE recuperation SET code = ? WHERE mail = ?');
+                         $recup_insert->execute(array($recup_code,$recup_mail));
+                         
+                     }
+                     
+                public function InsertRecup($recup_mail,$recup_code)
+                {
+                    $cnx = PdoBdd::$monPdo;
+                    
+                    $recup_insert = $cnx->prepare('INSERT INTO recuperation(mail,code) VALUES (?, ?)');
+                    $recup_insert->execute(array($recup_mail,$recup_code));
+                }
+                
+                public function VerifReq($recup_mail,$verif_code) {
+                    
+                    $cnx = PdoBdd::$monPdo;
+                    $req=" SELECT id,code
+                           FROM recuperation
+                           WHERE mail = ? and code = ?";
+
+                     $reqprepare = $cnx->prepare($req);
+	             $reqprepare->execute(array($recup_mail,$verif_code));
+	             $verif_req = $reqprepare->rowCount();
+                     
+                  return $verif_req;
+                    
+                }
+                
+                public function VerifRecup($recup_mail)
+                {
+                     $cnx = PdoBdd::$monPdo;
+                    $req=" UPDATE recuperation
+                           SET confirme = 1
+                           WHERE mail = ? ";
+                    $reqprepare = $cnx->prepare($req);
+                    $reqprepare->execute(array($recup_mail));
+ 
+                    
+                }
+                
+                public function VerifConfirme($recup_mail) {
+                    
+                         $cnx = PdoBdd::$monPdo;
+                    
+                         
+                         $req="SELECT confirme 
+                               FROM recuperation
+                               WHERE mail = ?";
+                         
+                         $verif_confirme = $cnx->prepare($req);
+                         $verif_confirme->execute(array($recup_mail));
+                         $verif_confirme = $verif_confirme->fetch();
+                         $verif_confirme = $verif_confirme['confirme'];
+                         
+                         return $verif_confirme;
+                    
+                }
+                
+                public function UpdateUtilisateur($mdp,$recup_mail) {
+                    $cnx = PdoBdd::$monPdo;
+                    $req="UPDATE utilisateurs
+                          SET mdp = ? 
+                          WHERE adresse_mail = ?";
+                    $ins_mdp = $cnx->prepare($req);
+                    $ins_mdp->execute(array($mdp,$_SESSION['recup_mail']));
+                    
+                }
+                
+                public function DeleteCode($recup_mail) {
+                    
+                    $cnx = PdoBdd::$monPdo;
+                    $req="DELETE FROM recuperation
+                          WHERE mail = ?";
+                    $dell_code = $cnx->prepare($req);
+                    $dell_code->execute(array($_SESSION['recup_mail']));
+                    
+                    
+                }
+                
 		
 }
