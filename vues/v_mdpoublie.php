@@ -1,6 +1,6 @@
 <?php
 
-include '../mdpoublie.php';
+include '../Controlleurs/c_mdpoublie.php';
 
 ?>
 <html>
@@ -16,14 +16,14 @@ include '../mdpoublie.php';
     <h1 id="titreA">Mot de passe oublié</h1>
     <div id="divA">  
 <?php if($section == 'code') { ?>
-Un code de vérification vous a été envoyé par mail: <?= $_SESSION['recup_mail'] ?>
+        Un code de vérification vous a été envoyé par mail: <b><?= $_SESSION['recup_mail'] ?></b>
 <br/>
 <form method="post">
     <br/>
-   <input type="text" placeholder="Sasir le code" name="verif_code"/><br/>
+   <input type="text" placeholder="Saisir le code" name="verif_code"/><br/>
    <br>
    <input type="submit" value="Valider" name="verif_submit" class="btn-success"/>
-   <input type="submit" value="Accueil" name="accueil" class="btn-success" onclick="window.location.href = 'http://127.0.0.1/Gestion%20du%20matériel';"/>
+   <input type="button" value="Accueil" name="accueil" class="btn-success" onclick="window.location.href = 'http://127.0.0.1/Gestion%20du%20matériel';"/>
 </form>
 <?php } elseif($section == "changemdp") { ?>
 Nouveau mot de passe pour <b><?= $_SESSION['recup_mail'] ?></b>
@@ -35,7 +35,7 @@ Nouveau mot de passe pour <b><?= $_SESSION['recup_mail'] ?></b>
    <input type="password" placeholder="Confirmation du mot de passe" name="change_mdpc"/>
    <br><br>
    <input type="submit" value="Valider" name="change_submit" class="btn-success"/>
-   <input type="submit" value="Accueil" name="accueil" class="btn-success" onclick="window.location.href = 'http://127.0.0.1/Gestion%20du%20matériel';"/>
+   <input type="button" value="Accueil" name="accueil" class="btn-success" onclick="window.location.href = 'http://127.0.0.1/Gestion%20du%20matériel';"/>
 </form>
 <?php } else { ?>
 <form method="post">
@@ -48,11 +48,5 @@ Nouveau mot de passe pour <b><?= $_SESSION['recup_mail'] ?></b>
 <?php if(isset($error)) { echo '<span style="color:black">'.$error.'</span>'; } else { echo ""; } ?>
     </div>  
     </body>
-    
-<script>
-function myFunction() {
-  windows.location()
-}
-</script>
 </html>
 

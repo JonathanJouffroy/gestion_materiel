@@ -23,3 +23,12 @@ body
     text-align: center;
     padding-top:5%;
 }
+
+.logo img
+{
+        width: 70%;
+	margin: 30px;
+	margin-top: 55px;
+}
+
+

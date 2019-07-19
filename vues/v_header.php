@@ -21,7 +21,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li><a href="#" class="fas fa-home">Accueil </a></li>
+                <li><a href="http://127.0.0.1/Gestion%20du%20mat%c3%a9riel/vues/v_enregistrement.php" class="fas fa-home">Accueil </a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Afficher le stock <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">

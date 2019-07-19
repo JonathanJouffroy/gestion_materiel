@@ -116,15 +116,26 @@
 	             $reqprepare->execute(array($recup_mail));
 	             $recup_count = $reqprepare->rowCount();
                      
-                     if($recup_count == 1)
-                     {
-                         $nomU = $reqprepare->fetch();
-                         $nomU = $nomU['nom_d_utilisateur']; 
-                         return $nomU;
-                     }
+                     return $recup_count;
                      
                 }
                     
+                public function GetNomU($recup_mail)
+                {
+                    $cnx = PdoBdd::$monPdo;
+             
+                         $req="SELECT nom_d_utilisateur
+                           FROM utilisateurs
+                           WHERE adresse_mail = ?";
+                     $reqprepare = $cnx->prepare($req);
+	             $reqprepare->execute(array($recup_mail));
+                     $reqprepare = $reqprepare->fetch();
+                     $getnomU = $reqprepare['nom_d_utilisateur'];
+                     
+                     return $getnomU;
+                    
+                    
+                }
                 
                 
                 public function VerifCodeMDP($recup_mail)
