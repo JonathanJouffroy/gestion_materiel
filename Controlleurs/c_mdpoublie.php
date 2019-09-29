@@ -29,7 +29,7 @@ if(isset($_POST['recup_submit'],$_POST['recup_mail'])) {
           if($VerifMail == 1)
         {
             $_SESSION['recup_mail'] = $recup_mail ;
-        $nomU = $pdo->GetNomU($recup_mail);
+            $nomU = $pdo->GetNomU($recup_mail);
             $pseudo = $nomU; 
             $recup_code = "";
             
@@ -80,7 +80,6 @@ if(isset($_POST['recup_submit'],$_POST['recup_mail'])) {
                 $mail->Body = $body;
                 $mail->AltBody = strip_tags($body);
                 $mail->send();
-
                 header("Location:http://127.0.0.1/Gestion%20du%20matériel/vues/v_mdpoublie.php?section=code");
       }
      
@@ -128,7 +127,6 @@ if(isset($_POST['change_submit'])) {
                $UpdateUtilisateur = $pdo->UpdateUtilisateur($mdp,$_SESSION['recup_mail']);
                $UpdateUtilisateur;
                $DeleteCode;
-
                header('Location:http://127.0.0.1/Gestion%20du%20matériel');
             } else {
                $error = "Vos mots de passes ne correspondent pas";
